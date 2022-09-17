@@ -1,9 +1,10 @@
 import {useState, useEffect} from "react";
-import {fetchPopularRepos} from "../utils/api";
-import SelectedLanguage from "./SelectedLanguage";
-import Repos from "./Repos";
 import {ThreeCircles} from  'react-loader-spinner';
 import { useSearchParams } from 'react-router-dom';
+import {fetchPopularRepos} from "../../utils/api";
+import SelectedLanguage from "./SelectedLanguage";
+import Repos from "./Repos";
+
 
 
 const Popular = () => {

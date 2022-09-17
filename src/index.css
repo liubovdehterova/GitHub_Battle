@@ -149,3 +149,24 @@ li {
   left: 45%;
   z-index: 11;
 }
+
+.winner {
+  color: #900017;
+  font-weight: bold;
+}
+.new__game {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25px;
+}
+.new__game__inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 250px;
+  height: 45px;
+  background: #900017;
+  color: #fff;
+  border-radius: 10px;
+}
