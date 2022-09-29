@@ -1,33 +1,40 @@
-import {useState} from "react";
-import {Link, useLocation} from "react-router-dom";
-import PlayerPreview from "./PlayerPreview";
-import PlayerInput from "./PlayerInput"
+import { Link, useLocation } from 'react-router-dom'
+import PlayerInput from './PlayerInput'
+import PlayerPreview from './PlayerPreview'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+    setPlayerOneName,
+    setPlayerTwoName,
+    setPlayerOneImage,
+    setPlayerTwoImage,
+} from '../../redux/battle/battle.actions'
 
 const Battle = () => {
-    const [playerOneName, setPlayerOneName] = useState('');
-    const [playerTwoName, setPlayerTwoName] = useState('');
-    const [playerOneImage, setPlayerOneImage] = useState(null);
-    const [playerTwoImage, setPlayerTwoImage] = useState(null);
+    const dispatch = useDispatch()
+    const playerOneName = useSelector((state) => state.battleReducer.playerOneName)
+    const playerTwoName = useSelector((state) => state.battleReducer.playerTwoName)
+    const playerOneImage = useSelector((state) => state.battleReducer.playerOneImage)
+    const playerTwoImage = useSelector((state) => state.battleReducer.playerTwoImage)
 
-    const location = useLocation();
+    const location = useLocation()
 
     const handleSubmit = (id, username) => {
         if (id === 'PlayerOne') {
-            setPlayerOneName(username);
-            setPlayerOneImage('https://github.com/' + username + '.png?size=200');
+            dispatch(setPlayerOneName(username));
+            dispatch(setPlayerOneImage('https://github.com/' + username + '.png?size=200'));
         } else {
-            setPlayerTwoName(username);
-            setPlayerTwoImage('https://github.com/' + username + '.png?size=200');
+            dispatch(setPlayerTwoName(username));
+            dispatch(setPlayerTwoImage('https://github.com/' + username + '.png?size=200'));
         }
     }
 
     const handleReset = (id) => {
         if (id === 'PlayerOne') {
-            setPlayerOneName('');
-            setPlayerOneImage(null);
+            dispatch(setPlayerOneName(''));
+            dispatch(setPlayerOneImage(null));
         } else {
-            setPlayerTwoName('');
-            setPlayerTwoImage(null);
+            dispatch(setPlayerTwoName(''));
+            dispatch(setPlayerTwoImage(null));
         }
     }
     return (

@@ -1,96 +1,74 @@
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {Link, useLocation} from "react-router-dom";
-import {ThreeCircles} from 'react-loader-spinner';
-import {battle} from "../../utils/api";
+import {useDispatch, useSelector} from 'react-redux'
+
 import PlayerPreview from "./PlayerPreview";
 import PlayerInfo from "./PlayerInfo";
+import {fetchResultBattle} from '../../redux/battle/battle.thunk';
+import {
+    setPlayerOneName,
+    setPlayerTwoName,
+    setPlayerOneImage,
+    setPlayerTwoImage,
+    setUserName
+} from '../../redux/battle/battle.actions';
+
 
 
 const Results = () => {
     const location = useLocation();
 
-    const [winner, setWinner] = useState(null);
-    const [loser, setLoser] = useState(null);
-    const [loader, setLoader] = useState(false);
-    const [error, setError] = useState(false);
-
+    const dispatch = useDispatch()
+    const playerOneName = useSelector((state) => state.battleReducer.playerOneName);
+    const playerTwoName = useSelector((state) => state.battleReducer.playerTwoName);
+    const playerOneImage = useSelector((state) => state.battleReducer.playerOneImage);
+    const playerTwoImage = useSelector((state) => state.battleReducer.playerTwoImage);
+    const winnerScore = useSelector((state) => state.battleReducer.winnerScore);
+    const loserScore = useSelector((state) => state.battleReducer.loserScore);
+    const infoPlayerOne = useSelector((state) => state.battleReducer.infoPlayerOne);
+    const infoPlayerTwo = useSelector((state) => state.battleReducer.infoPlayerTwo);
+    const error = useSelector((state) => state.battleReducer.error);
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
+        dispatch(
+            fetchResultBattle([searchParams.get('playerOneName'), searchParams.get('playerTwoName')])
+        )
+    }, [location.search]);
 
-        (async () => {
-            setLoader(true);
-            let data = await battle([searchParams.get('playerOneName'), searchParams.get('playerTwoName')]);
-            data && setWinner(data[0]);
-            data && setLoser(data[1]);
-            setLoader(false);
-            setError(!data);
-        })()
-    }, [])
+    const handleReset = () => {
+        dispatch(setPlayerOneName(''));
+        dispatch(setPlayerOneImage(''));
+        dispatch(setPlayerTwoName(''));
+        dispatch(setPlayerTwoImage(''));
+        dispatch(setUserName(''));
+    }
 
 
     return (
-        <>
-            <div className="row">
-                {error ? <h2>Something went wrong, try to reload page </h2> : undefined}
-                {loader ?
-                    <div className='loader'>
-                        <ThreeCircles color="#d0021b"/>
+        <div className="row">
+            {error ? (
+                <div>
+                    <p>{error}</p>
+                    <Link className="reset" to="/battle">
+                        Reset
+                    </Link>
+                </div>
+            ) : (
+                <div>
+                    <div className="row">
+                        <PlayerPreview username={playerOneName} avatar={playerOneImage}>
+                            <PlayerInfo label="Winner" score={winnerScore} info={infoPlayerOne} />
+                        </PlayerPreview>
+                        <PlayerPreview username={playerTwoName} avatar={playerTwoImage}>
+                            <PlayerInfo label="Loser" score={loserScore} info={infoPlayerTwo} />
+                        </PlayerPreview>
                     </div>
-                    : null}
-                <div className="column">
-                    <h2 className='winner'>Winner</h2>
-                    {
-                        winner
-                            ?
-                            <PlayerPreview
-                                username={winner.profile.login}
-                                avatar={winner.profile.avatar_url}
-                            >
-                                <PlayerInfo
-                                    name={winner.profile.name}
-                                    location={winner.profile.location}
-                                    company={winner.profile.company}
-                                    followers={winner.profile.followers}
-                                    following={winner.profile.following}
-                                    public_repos={winner.profile.public_repos}
-                                    blog={winner.profile.blog}
-                                    score={winner.score}
-                                />
-                            </PlayerPreview>
-                            :
-                            null
-                    }
+                    <Link className="reset" to="/battle" onClick={handleReset}>
+                        Next game
+                    </Link>
                 </div>
-                <div className="column">
-                    <h2 style={{color: 'grey'}}>Loser</h2>
-                    {
-                        loser
-                            ?
-                            <PlayerPreview
-                                username={loser.profile.login}
-                                avatar={loser.profile.avatar_url}
-                            >
-                                <PlayerInfo
-                                    name={loser.profile.name}
-                                    location={loser.profile.location}
-                                    company={loser.profile.company}
-                                    followers={loser.profile.followers}
-                                    following={loser.profile.following}
-                                    public_repos={loser.profile.public_repos}
-                                    blog={loser.profile.blog}
-                                    score={loser.score}
-                                />
-                            </PlayerPreview>
-                            :
-                            null
-                    }
-                </div>
-            </div>
-            <div className="new__game">
-                <Link className="new__game__inner" to='/battle'>Next game</Link>
-            </div>
-        </>
+            )}
+        </div>
     )
 }
-
 export default Results;

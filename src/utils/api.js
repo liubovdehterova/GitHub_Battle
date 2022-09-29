@@ -1,8 +1,8 @@
-import axios from "axios"
+import axios from 'axios'
 
-const id = 'YOUR_CLIENT_ID';
-const sec = 'YOUR_SECRET_ID';
-const params = '?client_id=' + id + '?client_secret=' + sec;
+const id = 'YOUR_CLIENT_ID'
+const sec = 'YOUR_SECRET_ID'
+const params = '?client_id=' + id + '?client_secret=' + sec
 
 const handleError = (error) => {
     console.error(error)
@@ -56,9 +56,9 @@ export const battle = (players) => {
         .catch(handleError)
 
 }
+battle(['rash23', 'anna'])
 
-
-export const fetchPopularRepos = (language) => {
+export const fetchPopularReposHttpRequest = (language) => {
     const encodeURI = window.encodeURI('https://api.github.com/search/repositories?q=stars:>1+language:' + language + '&sort=stars&order=desc&type=Repositories');
     return axios.get(encodeURI)
         .then((response) => {
