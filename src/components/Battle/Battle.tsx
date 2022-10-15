@@ -7,18 +7,20 @@ import {
     setPlayerTwoName,
     setPlayerOneImage,
     setPlayerTwoImage,
-} from '../../redux/battle/battle.actions'
+} from '../../redux/battle/battle.slice'
+import {FC} from "react";
+import {RootState} from "../../types";
 
-const Battle = () => {
+const Battle: FC = (): JSX.Element => {
     const dispatch = useDispatch()
-    const playerOneName = useSelector((state) => state.battleReducer.playerOneName)
-    const playerTwoName = useSelector((state) => state.battleReducer.playerTwoName)
-    const playerOneImage = useSelector((state) => state.battleReducer.playerOneImage)
-    const playerTwoImage = useSelector((state) => state.battleReducer.playerTwoImage)
+    const playerOneName = useSelector((state: RootState): string => state.battle.playerOneName)
+    const playerTwoName = useSelector((state: RootState): string => state.battle.playerTwoName)
+    const playerOneImage = useSelector((state: RootState): string => state.battle.playerOneImage)
+    const playerTwoImage = useSelector((state: RootState): string => state.battle.playerTwoImage)
 
     const location = useLocation()
 
-    const handleSubmit = (id, username) => {
+    const handleSubmit = (id: string, username: string) => {
         if (id === 'PlayerOne') {
             dispatch(setPlayerOneName(username));
             dispatch(setPlayerOneImage('https://github.com/' + username + '.png?size=200'));
@@ -28,13 +30,13 @@ const Battle = () => {
         }
     }
 
-    const handleReset = (id) => {
+    const handleReset = (id: string) => {
         if (id === 'PlayerOne') {
             dispatch(setPlayerOneName(''));
-            dispatch(setPlayerOneImage(null));
+            dispatch(setPlayerOneImage(''));
         } else {
             dispatch(setPlayerTwoName(''));
-            dispatch(setPlayerTwoImage(null));
+            dispatch(setPlayerTwoImage(''));
         }
     }
     return (

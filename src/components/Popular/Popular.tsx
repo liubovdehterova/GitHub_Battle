@@ -1,7 +1,9 @@
+import {FC} from "react";
 import SelectedLanguages from './SelectedLanguage'
 import Repos from './Repos'
 
-const Popular = () => {
+
+const Popular: FC = (): JSX.Element => {
     return (
         <>
             <SelectedLanguages />

@@ -1,4 +1,7 @@
-const PlayerPreview = (props) =>  (
+import {FC} from "react";
+import {PlayerPreviewProps} from "./types";
+
+const PlayerPreview: FC<PlayerPreviewProps> = (props: PlayerPreviewProps): JSX.Element => (
     <div>
         <div className="column">
             <img className='avatar' src={props.avatar} alt="Avatar"/>

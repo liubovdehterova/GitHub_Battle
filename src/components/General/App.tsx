@@ -1,3 +1,4 @@
+import {FC} from "react";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import '../../App.css';
 import Home from "./Home";
@@ -6,7 +7,8 @@ import Battle from "../Battle/Battle";
 import Nav from "./Nav";
 import Results from "../Battle/Results";
 
-const App = () => (
+
+const App: FC = (): JSX.Element => (
     <div className='container'>
         <BrowserRouter>
             <Nav/>

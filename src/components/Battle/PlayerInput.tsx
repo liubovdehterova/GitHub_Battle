@@ -1,9 +1,10 @@
-import {useState} from "react";
+import {FC, FormEvent, useState} from "react";
+import {PlayerInputProps} from "./types";
 
-const PlayerInput = (props) => {
+const PlayerInput: FC<PlayerInputProps> = (props: PlayerInputProps): JSX.Element => {
     const [username, setUsername] = useState('');
 
-    const handleSubmit = (event) => {
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         props.onSubmit(props.id, username);
     }

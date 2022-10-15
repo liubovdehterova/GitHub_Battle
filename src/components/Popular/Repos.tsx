@@ -1,19 +1,22 @@
 import {useSelector} from 'react-redux';
 import {ThreeCircles} from 'react-loader-spinner';
+import {FC, memo} from "react";
+import {RootState} from "../../types";
+import {ReposType} from "../../redux/popular/types";
 
-const Repos = () => {
-
-    const repos = useSelector((state) => state.popularReducer.repos)
-    const loading = useSelector((state) => state.popularReducer.loading)
+const Repos: FC = memo((): JSX.Element => {
+    const repos: ReposType[] = useSelector((state: RootState): ReposType[] => state.popular.repos)
+    const loading = useSelector((state: RootState) => state.popular.loading)
 
     return (
         <ul className='popular-list'>
-            {loading ? (
+            {
+                loading ? (
                 <div className='loader'>
                     <ThreeCircles color="#d0021b"/>
                 </div>
             ) : (
-                repos.map((repo, index) => (
+                repos.map((repo:  ReposType, index: number): JSX.Element => (
                         <li key={repo.id} className='popular-item'>
                             <div className='popular-rank'>
                                 #{index + 1}
@@ -37,9 +40,8 @@ const Repos = () => {
                         </li>
                     )
                 )
-                )
-            }
-        < /ul>
+            )}
+        </ul>
     );
-}
+})
 export default Repos;
